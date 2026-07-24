@@ -1054,16 +1054,44 @@ func RemoveLabel(label string, targetHandle string, accessJwt string, endpoint s
 	additionalHeaders := map[string]string{"atproto-proxy": bskyDid + "#atproto_labeler"}
 	requestURL := endpoint + "/xrpc/tools.ozone.moderation.emitEvent"
 
-	payload := "{\"subject\": {\"$type\": \"com.atproto.admin.defs#repoRef\",\"did\": \"" + targetProfile.DID + "\"},\"createdBy\": \"" + bskyDid + "\",\"subjectBlobCids\": [],\"event\": {\"$type\": \"tools.ozone.moderation.defs#modEventLabel\",\"createLabelVals\": [],\"negateLabelVals\": [\"" + label + "\"]}}"
-
-	_, err = SendPostWithHeaders(requestURL, payload, accessJwt, additionalHeaders)
+	payload, err := json.Marshal(map[string]interface{}{
+		"subject": map[string]string{
+			"$type": "com.atproto.admin.defs#repoRef",
+			"did":   targetProfile.DID,
+		},
+		"createdBy":       bskyDid,
+		"subjectBlobCids": []string{},
+		"event": map[string]interface{}{
+			"$type":           "tools.ozone.moderation.defs#modEventLabel",
+			"createLabelVals": []string{},
+			"negateLabelVals": []string{label},
+		},
+	})
 	if err != nil {
 		return err
 	}
 
-	payload = "{\"subject\": {\"$type\": \"com.atproto.admin.defs#repoRef\",\"did\": \"" + targetProfile.DID + "\"},\"createdBy\": \"" + bskyDid + "\",\"subjectBlobCids\": [],\"event\": {\"$type\": \"tools.ozone.moderation.defs#modEventAcknowledge\"}}"
+	_, err = SendPostWithHeaders(requestURL, string(payload), accessJwt, additionalHeaders)
+	if err != nil {
+		return err
+	}
 
-	_, err = SendPostWithHeaders(requestURL, payload, accessJwt, additionalHeaders)
+	payload, err = json.Marshal(map[string]interface{}{
+		"subject": map[string]string{
+			"$type": "com.atproto.admin.defs#repoRef",
+			"did":   targetProfile.DID,
+		},
+		"createdBy":       bskyDid,
+		"subjectBlobCids": []string{},
+		"event": map[string]string{
+			"$type": "tools.ozone.moderation.defs#modEventAcknowledge",
+		},
+	})
+	if err != nil {
+		return err
+	}
+
+	_, err = SendPostWithHeaders(requestURL, string(payload), accessJwt, additionalHeaders)
 	if err != nil {
 		return err
 	}
