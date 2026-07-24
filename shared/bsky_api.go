@@ -991,7 +991,7 @@ func SetLabel(label string, targetHandle string, accessJwt string, endpoint stri
 		return err
 	}
 
-	additionalHeaders := map[string]string{"atproto-accept-labelers": bskyLabelerDid + ";redact", "atproto-proxy": bskyDid + "#atproto_labeler"}
+	additionalHeaders := map[string]string{"atproto-accept-labelers": bskyLabelerDid + ";redact", "atproto-proxy": bskyLabelerDid + "#atproto_labeler"}
 
 	url := endpoint + "/xrpc/tools.ozone.moderation.getRepo?did=" + url.QueryEscape(targetProfile.DID)
 
@@ -1056,7 +1056,7 @@ func RemoveLabel(label string, targetHandle string, accessJwt string, endpoint s
 		return err
 	}
 
-	additionalHeaders := map[string]string{"atproto-accept-labelers": bskyLabelerDid + ";redact", "atproto-proxy": bskyDid + "#atproto_labeler"}
+	additionalHeaders := map[string]string{"atproto-accept-labelers": bskyLabelerDid + ";redact", "atproto-proxy": bskyLabelerDid + "#atproto_labeler"}
 
 	requestURL := endpoint + "/xrpc/tools.ozone.moderation.getRepo?did=" + url.QueryEscape(targetProfile.DID)
 
