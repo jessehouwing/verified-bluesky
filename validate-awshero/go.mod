@@ -2,10 +2,9 @@ module github.com/validate_awshero
 
 go 1.20
 
-require (
-	github.com/antchfx/htmlquery v1.3.4
-	github.com/fermyon/spin/sdk/go/v2 v2.2.0
-)
+require github.com/fermyon/spin/sdk/go/v2 v2.2.0
+
+require github.com/antchfx/htmlquery v1.3.4 // indirect
 
 require (
 	github.com/antchfx/xpath v1.3.3 // indirect
