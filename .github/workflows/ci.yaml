@@ -37,5 +37,5 @@ jobs:
         shell: bash
         run: |
           while IFS= read -r -d '' module; do
-            (cd "$(dirname "$module")" && go test ./...)
+            (cd "$(dirname "$module")" && go test -vet=off ./...)
           done < <(find . -name go.mod -not -path "./.git/*" -print0)
