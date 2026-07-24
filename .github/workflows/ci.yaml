@@ -3,6 +3,9 @@ on:
   push:
     branches:
       - "main"
+  pull_request:
+    branches:
+      - "main"
 env:
   GO_VERSION: "1.23.2"
   TINYGO_VERSION: "v0.34.0"
@@ -11,6 +14,8 @@ jobs:
   spin:
     runs-on: "ubuntu-latest"
     name: Build Spin App
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v4
       - name: Install Go
@@ -28,3 +33,9 @@ jobs:
       - name: Build verified-bluesky
         run: spin build
         working-directory: .
+      - name: Test Go modules
+        shell: bash
+        run: |
+          while IFS= read -r -d '' module; do
+            (cd "$(dirname "$module")" && go test ./...)
+          done < <(find . -name go.mod -not -path "./.git/*" -print0)
