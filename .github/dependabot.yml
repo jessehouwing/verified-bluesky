@@ -13,9 +13,7 @@ updates:
       interval: "weekly"
 updates:
   - package-ecosystem: "github-actions" # See documentation for possible values
-    directories:
-    - "/" # Location of package manifests
-    - "**/*"
+    directory: "/" 
     schedule:
       interval: "weekly"
       
